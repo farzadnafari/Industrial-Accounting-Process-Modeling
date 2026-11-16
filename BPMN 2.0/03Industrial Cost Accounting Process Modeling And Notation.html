@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AC1020 - Manufacturing Workflow</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f5f8;color:#172b4d;font-family:Tahoma,Arial,sans-serif}
+header{background:#172b4d;color:white;padding:22px 28px}
+header h1{font-size:22px;margin:0 0 5px}
+header p{margin:0;color:#cbd5e1;font-size:12px}
+main{padding:20px;max-width:1800px;margin:auto}
+.panel{background:white;border:1px solid #d8dee8;border-radius:10px;padding:16px;margin-bottom:16px}
+h2{font-size:17px;margin:0 0 12px}
+p{font-size:13px;line-height:1.9}
+.scroll{overflow:auto;border:1px solid #cbd5e1;border-radius:8px;background:#fff}
+svg{display:block;width:100%;min-width:1700px;height:auto}
+.pool{fill:#fff;stroke:#344054;stroke-width:2}
+.lane{stroke:#98a2b3;stroke-width:1;fill:#fff}
+.lane.alt{fill:#f8fafc}
+.laneName{font-size:14px;font-weight:bold;fill:#344054}
+.poolName{font-size:16px;font-weight:bold;fill:#172b4d}
+.task{stroke-width:2;rx:8;ry:8}
+.taskText{font-size:12px;font-weight:bold;fill:#172b4d;text-anchor:middle}
+.subText{font-size:10px;fill:#475467;text-anchor:middle}
+.flow{fill:none;stroke:#344054;stroke-width:2;marker-end:url(#arr)}
+.message{fill:none;stroke:#667085;stroke-width:1.7;stroke-dasharray:7 5;marker-end:url(#msg)}
+.interrupt{fill:none;stroke:#b54708;stroke-width:1.8;stroke-dasharray:5 4;marker-end:url(#warn)}
+.event{fill:#fff;stroke:#344054;stroke-width:2}
+.end{fill:#fff;stroke:#15803d;stroke-width:4}
+.gateway{fill:#fff7ed;stroke:#d97706;stroke-width:2}
+.label{font-size:11px;fill:#475467;text-anchor:middle}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px}
+.legend span{display:flex;align-items:center;gap:6px}
+.key{width:17px;height:12px;border:1px solid #777;border-radius:3px}
+.line{width:28px;border-top:2px solid #344054}
+.dash{width:28px;border-top:2px dashed #667085}
+.warn{width:28px;border-top:2px dashed #b54708}
+.note{background:#fffaeb;border:1px solid #fedf89;padding:12px;border-radius:7px;font-size:12px;line-height:1.9}
+footer{text-align:center;color:#667085;font-size:11px;padding:15px}
+@media print{
+ body{background:white}
+ header{print-color-adjust:exact}
+ .panel{break-inside:avoid}
+ .scroll{overflow:visible}
+ svg{min-width:0}
+}
+</style>
+</head>
+<body>
+<header>
+ <h1>AC1020 | نمودار گردش کار تولید</h1>
+ <p>Product: AC1020 | Drawing: 202020 | Material: ST37 | Production Batch: 5,100 Pieces</p>
+</header>
+
+<main>
+<section class="panel">
+ <h2>فرایند اصلی و ارتباط واحدهای پشتیبان</h2>
+ <p>
+ نمودار شامل سه شرکت‌کننده فرایندی است: فرایند اصلی تولید، ارزیابی و تحلیل عملکرد،
+ و حسابداری صنعتی. جریان پیوسته، توالی فعالیت‌ها را نشان می‌دهد.
+ خطوط نقطه‌چین، تبادل اطلاعات میان شرکت‌کنندگان را مشخص می‌کنند.
+ </p>
+ <div class="scroll">
+ <svg viewBox="0 0 2500 1570" role="img" aria-label="AC1020 BPMN oriented workflow">
+ <defs>
+  <marker id="arr" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto">
+   <path d="M0 0 L8 4 L0 8 Z" fill="#344054"/>
+  </marker>
+  <marker id="msg" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto">
+   <path d="M0 0 L8 4 L0 8 Z" fill="#667085"/>
+  </marker>
+  <marker id="warn" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto">
+   <path d="M0 0 L8 4 L0 8 Z" fill="#b54708"/>
+  </marker>
+ </defs>
+
+ <!-- MAIN PARTICIPANT -->
+ <rect class="pool" x="20" y="20" width="2460" height="900"/>
+ <text class="poolName" x="2450" y="48" text-anchor="end">POOL 1 — فرایند اصلی تولید AC1020</text>
+
+ <!-- Lanes -->
+ <rect class="lane" x="20" y="65" width="2460" height="105"/>
+ <rect class="lane alt" x="20" y="170" width="2460" height="105"/>
+ <rect class="lane" x="20" y="275" width="2460" height="110"/>
+ <rect class="lane alt" x="20" y="385" width="2460" height="420"/>
+ <rect class="lane" x="20" y="805" width="2460" height="115"/>
+
+ <line x1="160" y1="65" x2="160" y2="920" stroke="#98a2b3"/>
+ <text class="laneName" x="90" y="122" text-anchor="middle">مهندسی</text>
+ <text class="laneName" x="90" y="227" text-anchor="middle">برنامه‌ریزی</text>
+ <text class="laneName" x="90" y="335" text-anchor="middle">مواد و متریال</text>
+ <text class="laneName" x="90" y="590" text-anchor="middle">تولید</text>
+ <text class="laneName" x="90" y="870" text-anchor="middle">تحویل محصول</text>
+
+ <!-- Engineering -->
+ <circle class="event" cx="205" cy="117" r="14"/>
+ <text class="label" x="205" y="145">شروع</text>
+ <rect class="task" x="250" y="91" width="190" height="52" fill="#dbeafe" stroke="#2563eb"/>
+ <text class="taskText" x="345" y="111">
+  <tspan x="345">تعیین نقشه و مشخصات</tspan>
+  <tspan x="345" dy="17">AC1020 / 202020</tspan>
+ </text>
+ <rect class="task" x="485" y="91" width="195" height="52" fill="#dbeafe" stroke="#2563eb"/>
+ <text class="taskText" x="582" y="111">
+  <tspan x="582">تعیین توالی عملیات</tspan>
+  <tspan x="582" dy="17">ماشین، ابزار و مواد</tspan>
+ </text>
+ <rect class="task" x="725" y="91" width="195" height="52" fill="#dbeafe" stroke="#2563eb"/>
+ <text class="taskText" x="822" y="111">
+  <tspan x="822">تعیین مبانی مهندسی</tspan>
+  <tspan x="822" dy="17">زمان و مصرف ابزار</tspan>
+ </text>
+
+ <!-- Planning -->
+ <rect class="task" x="485" y="195" width="195" height="52" fill="#dbeafe" stroke="#2563eb"/>
+ <text class="taskText" x="582" y="215">
+  <tspan x="582">دریافت مسیر مهندسی</tspan>
+  <tspan x="582" dy="17">و مشخصات بچ 5100</tspan>
+ </text>
+ <rect class="task" x="725" y="195" width="215" height="52" fill="#dbeafe" stroke="#2563eb"/>
+ <text class="taskText" x="832" y="215">
+  <tspan x="832">زمان‌بندی مراحل</tspan>
+  <tspan x="832" dy="17">و تخصیص منابع</tspan>
+ </text>
+ <rect class="task" x="985" y="195" width="215" height="52" fill="#dbeafe" stroke="#2563eb"/>
+ <text class="taskText" x="1092" y="215">
+  <tspan x="1092">ابلاغ برنامه تولید</tspan>
+  <tspan x="1092" dy="17">و نسخه اطلاعاتی</tspan>
+ </text>
+
+ <!-- Material input -->
+ <circle class="event" cx="205" cy="330" r="14"/>
+ <text class="label" x="205" y="358">ورود مواد</text>
+ <rect class="task" x="250" y="304" width="205" height="52" fill="#dcfce7" stroke="#16a34a"/>
+ <text class="taskText" x="352" y="324">
+  <tspan x="352">مواد اولیه ST37</tspan>
+  <tspan x="352" dy="17">ورق 4100×300 mm</tspan>
+ </text>
+ <rect class="task" x="500" y="304" width="205" height="52" fill="#dcfce7" stroke="#16a34a"/>
+ <text class="taskText" x="602" y="324">
+  <tspan x="602">تحویل مواد به</tspan>
+  <tspan x="602" dy="17">مرحله برش AB10</tspan>
+ </text>
+
+ <!-- Production flow start -->
+ <circle class="event" cx="205" cy="575" r="14"/>
+ <text class="label" x="205" y="605">شروع تولید</text>
+
+ <!-- AB10 -->
+ <rect class="task" x="250" y="420" width="205" height="86" fill="#ffedd5" stroke="#ea580c"/>
+ <text class="taskText" x="352" y="442">
+  <tspan x="352">AB10 — برش ورق فولاد</tspan>
+  <tspan x="352" dy="18">دستگاه AB10 / ابزار CK10</tspan>
+  <tspan x="352" dy="17">خام 140×140 mm</tspan>
+ </text>
+ <text class="subText" x="352" y="522">15 دقیقه مهندسی / 18.059 برنامه / 19.072 واقعی</text>
+
+ <!-- WI10 -->
+ <rect class="task" x="500" y="420" width="205" height="86" fill="#ffedd5" stroke="#ea580c"/>
+ <text class="taskText" x="602" y="442">
+  <tspan x="602">WI10 — وایرکات اول</tspan>
+  <tspan x="602" dy="18">دستگاه WI10 / ابزار WK10</tspan>
+  <tspan x="602" dy="17">تبدیل مربع به دایره Ø134</tspan>
+ </text>
+ <text class="subText" x="602" y="522">30 / 34.575 / 41.228 دقیقه</text>
+
+ <!-- FM10 -->
+ <rect class="task" x="750" y="420" width="205" height="86" fill="#ffedd5" stroke="#ea580c"/>
+ <text class="taskText" x="852" y="442">
+  <tspan x="852">FM10 — فرز دستی</tspan>
+  <tspan x="852" dy="18">دستگاه FM10 / ابزار MATE</tspan>
+  <tspan x="852" dy="17">سوراخ مرکزی Ø10، عمق 3</tspan>
+ </text>
+ <text class="subText" x="852" y="522">پلیسه‌گیری دستی 0.5 دقیقه</text>
+ <text class="subText" x="852" y="539">2 / 3.197 / 3.445 دقیقه</text>
+
+ <!-- WI20 -->
+ <rect class="task" x="1000" y="420" width="205" height="86" fill="#ffedd5" stroke="#ea580c"/>
+ <text class="taskText" x="1102" y="442">
+  <tspan x="1102">WI20 — وایرکات دوم</tspan>
+  <tspan x="1102" dy="18">دستگاه WI20 / ابزار WK10</tspan>
+  <tspan x="1102" dy="17">برش قطر داخلی Ø54</tspan>
+ </text>
+ <text class="subText" x="1102" y="522">20 / 24.067 / 28.518 دقیقه</text>
+
+ <!-- FC10 -->
+ <rect class="task" x="1250" y="420" width="205" height="86" fill="#ffedd5" stroke="#ea580c"/>
+ <text class="taskText" x="1352" y="442">
+  <tspan x="1352">FC10 — فرز CNC</tspan>
+  <tspan x="1352" dy="18">دستگاه FC10 / ابزار FCK40</tspan>
+  <tspan x="1352" dy="17">10 سوراخ برای هر قطعه</tspan>
+ </text>
+ <text class="subText" x="1352" y="522">3.2 / 3.21 mm طبق داده نقشه</text>
+ <text class="subText" x="1352" y="539">5 / 7.142 / 8.050 دقیقه</text>
+
+ <!-- FM20 -->
+ <rect class="task" x="1500" y="420" width="205" height="86" fill="#ffedd5" stroke="#ea580c"/>
+ <text class="taskText" x="1602" y="442">
+  <tspan x="1602">FM20 — فرز دستی</tspan>
+  <tspan x="1602" dy="18">دستگاه FM20 / ابزار M4</tspan>
+  <tspan x="1602" dy="17">6 محل قلاویزکاری</tspan>
+ </text>
+ <text class="subText" x="1602" y="522">سوراخ Ø3.2 / عمق 3 mm</text>
+ <text class="subText" x="1602" y="539">نظافت قبل و بعد: 5 دقیقه</text>
+ <text class="subText" x="1602" y="556">10 / 21.480 / 30.541 دقیقه</text>
+
+ <!-- TM10 -->
+ <rect class="task" x="1750" y="420" width="205" height="86" fill="#ffedd5" stroke="#ea580c"/>
+ <text class="taskText" x="1852" y="442">
+  <tspan x="1852">TM10 — تراش دستی</tspan>
+  <tspan x="1852" dy="18">دستگاه TM10 / ابزار CM60</tspan>
+  <tspan x="1852" dy="17">پخ و پلیسه‌گیری</tspan>
+ </text>
+ <text class="subText" x="1852" y="522">2 تراش برای هر قطعه</text>
+ <text class="subText" x="1852" y="539">2 / 2.352 / 2.453 دقیقه</text>
+
+ <!-- Operation control cycle -->
+ <rect x="250" y="600" width="1705" height="155" rx="8"
+       fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5 4"/>
+ <text x="1935" y="625" class="laneName" text-anchor="end">
+  چرخه اجرایی مشترک در هر یک از هفت عملیات
+ </text>
+
+ <rect class="task" x="280" y="650" width="190" height="65" fill="#e0f2fe" stroke="#0284c7"/>
+ <text class="taskText" x="375" y="674">
+  <tspan x="375">آماده‌سازی</tspan>
+  <tspan x="375" dy="17">ماشین و ابزار</tspan>
+ </text>
+ <rect class="task" x="510" y="650" width="190" height="65" fill="#e0f2fe" stroke="#0284c7"/>
+ <text class="taskText" x="605" y="674">
+  <tspan x="605">تعویض ابزار</tspan>
+  <tspan x="605" dy="17">و ستاپ</tspan>
+ </text>
+ <rect class="task" x="740" y="650" width="190" height="65" fill="#e0f2fe" stroke="#0284c7"/>
+ <text class="taskText" x="835" y="674">
+  <tspan x="835">تولید اولین</tspan>
+  <tspan x="835" dy="17">قطعه</tspan>
+ </text>
+ <rect class="task" x="970" y="650" width="190" height="65" fill="#dcfce7" stroke="#16a34a"/>
+ <text class="taskText" x="1065" y="674">
+  <tspan x="1065">کنترل اولین</tspan>
+  <tspan x="1065" dy="17">قطعه</tspan>
+ </text>
+ <polygon class="gateway" points="1220,650 1255,682 1220,714 1185,682"/>
+ <text class="label" x="1220" y="686">X</text>
+ <text class="subText" x="1220" y="735">تأیید شروع تولید؟</text>
+ <rect class="task" x="1300" y="650" width="190" height="65" fill="#e0f2fe" stroke="#0284c7"/>
+ <text class="taskText" x="1395" y="674">
+  <tspan x="1395">تولید سری</tspan>
+  <tspan x="1395" dy="17">و کنترل هر قطعه</tspan>
+ </text>
+ <rect class="task" x="1530" y="650" width="190" height="65" fill="#e0f2fe" stroke="#0284c7"/>
+ <text class="taskText" x="1625" y="674">
+  <tspan x="1625">ثبت مقدار تولید</tspan>
+  <tspan x="1625" dy="17">و زمان عملیات</tspan>
+ </text>
+ <rect class="task" x="1760" y="650" width="165" height="65" fill="#fef3c7" stroke="#d97706"/>
+ <text class="taskText" x="1842" y="674">
+  <tspan x="1842">تحویل قطعه</tspan>
+  <tspan x="1842" dy="17">به مرحله بعد</tspan>
+ </text>
+
+ <path class="flow" d="M470 682 H510"/>
+ <path class="flow" d="M700 682 H740"/>
+ <path class="flow" d="M930 682 H970"/>
+ <path class="flow" d="M1160 682 H1185"/>
+ <path class="flow" d="M1255 682 H1300"/>
+ <path class="flow" d="M1490 682 H1530"/>
+ <path class="flow" d="M1720 682 H1760"/>
+
+ <path class="interrupt" d="M1220 650 V625 H1065 V650"/>
+ <text class="subText" x="1140" y="615">در صورت عدم تأیید: اصلاح ستاپ / بررسی مجدد</text>
+
+ <!-- Flow connectors for production stages -->
+ <path class="flow" d="M205 575 H250 V463"/>
+ <path class="flow" d="M455 463 H500"/>
+ <path class="flow" d="M705 463 H750"/>
+ <path class="flow" d="M955 463 H1000"/>
+ <path class="flow" d="M1205 463 H1250"/>
+ <path class="flow" d="M1455 463 H1500"/>
+ <path class="flow" d="M1705 463 H1750"/>
+
+ <!-- Handover after final process -->
+ <path class="flow" d="M1955 463 H1990 V575 H2020"/>
+
+ <!-- Delivery lane -->
+ <rect class="task" x="2020" y="835" width="125" height="55" fill="#dcfce7" stroke="#16a34a"/>
+ <text class="taskText" x="2082" y="857">
+  <tspan x="2082">جمع‌آوری</tspan>
+  <tspan x="2082" dy="17">محصول</tspan>
+ </text>
+ <rect class="task" x="2170" y="835" width="125" height="55" fill="#dcfce7" stroke="#16a34a"/>
+ <text class="taskText" x="2232" y="857">
+  <tspan x="2232">بسته‌بندی</tspan>
+  <tspan x="2232" dy="17">محصول</tspan>
+ </text>
+ <rect class="task" x="2320" y="835" width="125" height="55" fill="#dcfce7" stroke="#16a34a"/>
+ <text class="taskText" x="2382" y="857">
+  <tspan x="2382">ارسال</tspan>
+  <tspan x="2382" dy="17">محصول</tspan>
+ </text>
+ <circle class="end" cx="2460" cy="862" r="13"/>
+ <path class="flow" d="M2145 862 H2170"/>
+ <path class="flow" d="M2295 862 H2320"/>
+ <path class="flow" d="M2445 862 H2447"/>
+
+ <!-- Downtime event model -->
+ <rect x="250" y="775" width="1705" height="0" fill="none"/>
+ <text x="1930" y="790" class="subText" text-anchor="end">
+  رویداد توقف در هر عملیات: ثبت شروع و پایان، علت، دستگاه، اپراتور و مدت؛ سپس ازسرگیری همان عملیات
+ </text>
+
+ <!-- Main sequence info to support pools -->
+ <path class="message" d="M1092 247 V955 H300 V1010"/>
+ <path class="message" d="M1625 715 V975 H1500 V1010"/>
+ <text class="label" x="780" y="945">نسخه برنامه و اطلاعات مهندسی</text>
+ <text class="label" x="1500" y="965">گزارش واقعی تولید، زمان و توقف</text>
+
+ <!-- EVALUATION PARTICIPANT -->
+ <rect class="pool" x="20" y="1010" width="1200" height="230"/>
+ <text class="poolName" x="1190" y="1038" text-anchor="end">POOL 2 — واحد ارزیابی و تحلیل داده</text>
+ <rect class="task" x="50" y="1080" width="205" height="70" fill="#f3e8ff" stroke="#9333ea"/>
+ <text class="taskText" x="152" y="1105">
+  <tspan x="152">دریافت برنامه و</tspan>
+  <tspan x="152" dy="18">مبنای مهندسی</tspan>
+ </text>
+ <rect class="task" x="300" y="1080" width="205" height="70" fill="#f3e8ff" stroke="#9333ea"/>
+ <text class="taskText" x="402" y="1105">
+  <tspan x="402">ثبت زمان واقعی</tspan>
+  <tspan x="402" dy="18">و توقفات هر دستگاه</tspan>
+ </text>
+ <rect class="task" x="550" y="1080" width="205" height="70" fill="#f3e8ff" stroke="#9333ea"/>
+ <text class="taskText" x="652" y="1105">
+  <tspan x="652">مقایسه برنامه</tspan>
+  <tspan x="652" dy="18">با عملکرد واقعی</tspan>
+ </text>
+ <rect class="task" x="800" y="1080" width="205" height="70" fill="#f3e8ff" stroke="#9333ea"/>
+ <text class="taskText" x="902" y="1105">
+  <tspan x="902">تحلیل انحرافات</tspan>
+  <tspan x="902" dy="18">و علل توقف</tspan>
+ </text>
+ <rect class="task" x="1050" y="1080" width="145" height="70" fill="#f3e8ff" stroke="#9333ea"/>
+ <text class="taskText" x="1122" y="1105">
+  <tspan x="1122">گزارش</tspan>
+  <tspan x="1122" dy="18">مدیریتی</tspan>
+ </text>
+ <path class="flow" d="M255 1115 H300"/>
+ <path class="flow" d="M505 1115 H550"/>
+ <path class="flow" d="M755 1115 H800"/>
+ <path class="flow" d="M1005 1115 H1050"/>
+
+ <!-- COST ACCOUNTING PARTICIPANT -->
+ <rect class="pool" x="1260" y="1010" width="1220" height="230"/>
+ <text class="poolName" x="2450" y="1038" text-anchor="end">POOL 3 — واحد حسابداری صنعتی</text>
+ <rect class="task" x="1290" y="1080" width="205" height="70" fill="#e0f2fe" stroke="#0284c7"/>
+ <text class="taskText" x="1392" y="1105">
+  <tspan x="1392">دریافت مبانی</tspan>
+  <tspan x="1392" dy="18">مهندسی و برنامه</tspan>
+ </text>
+ <rect class="task" x="1540" y="1080" width="205" height="70" fill="#e0f2fe" stroke="#0284c7"/>
+ <text class="taskText" x="1642" y="1105">
+  <tspan x="1642">ثبت مصرف واقعی</tspan>
+  <tspan x="1642" dy="18">هر مرحله</tspan>
+ </text>
+ <rect class="task" x="1790" y="1080" width="205" height="70" fill="#e0f2fe" stroke="#0284c7"/>
+ <text class="taskText" x="1892" y="1105">
+  <tspan x="1892">محاسبه هزینه</tspan>
+  <tspan x="1892" dy="18">ماشین، نیروی کار، ابزار</tspan>
+ </text>
+ <rect class="task" x="2040" y="1080" width="205" height="70" fill="#e0f2fe" stroke="#0284c7"/>
+ <text class="taskText" x="2142" y="1105">
+  <tspan x="2142">تجمیع هزینه</tspan>
+  <tspan x="2142" dy="18">و انتقال WIP</tspan>
+ </text>
+ <rect class="task" x="2290" y="1080" width="165" height="70" fill="#e0f2fe" stroke="#0284c7"/>
+ <text class="taskText" x="2372" y="1105">
+  <tspan x="2372">بهای تمام‌شده</tspan>
+  <tspan x="2372" dy="18">محصول نهایی</tspan>
+ </text>
+ <path class="flow" d="M1495 1115 H1540"/>
+ <path class="flow" d="M1745 1115 H1790"/>
+ <path class="flow" d="M1995 1115 H2040"/>
+ <path class="flow" d="M2245 1115 H2290"/>
+
+ <!-- Downtime sub-process note -->
+ <rect x="20" y="1280" width="2460" height="240" rx="8" fill="#fff" stroke="#b54708" stroke-width="1.5"/>
+ <text class="poolName" x="2450" y="1310" text-anchor="end">رویدادهای توقف قابل ثبت در حین هر عملیات</text>
+
+ <rect x="55" y="1350" width="245" height="65" fill="#fff7ed" stroke="#d97706" rx="7"/>
+ <text class="taskText" x="177" y="1375">
+  <tspan x="177">خرابی دستگاه</tspan>
+  <tspan x="177" dy="18">و تعمیر دستگاه</tspan>
+ </text>
+ <rect x="340" y="1350" width="245" height="65" fill="#fff7ed" stroke="#d97706" rx="7"/>
+ <text class="taskText" x="462" y="1375">
+  <tspan x="462">خرابی ابزار</tspan>
+  <tspan x="462" dy="18">و تعویض ابزار</tspan>
+ </text>
+ <rect x="625" y="1350" width="245" height="65" fill="#fff7ed" stroke="#d97706" rx="7"/>
+ <text class="taskText" x="747" y="1375">
+  <tspan x="747">نبود فیکسچر</tspan>
+  <tspan x="747" dy="18">یا نبود اپراتور</tspan>
+ </text>
+ <rect x="910" y="1350" width="245" height="65" fill="#fff7ed" stroke="#d97706" rx="7"/>
+ <text class="taskText" x="1032" y="1375">
+  <tspan x="1032">قطع بودن برق</tspan>
+  <tspan x="1032" dy="18">و توقف ماشین</tspan>
+ </text>
+ <rect x="1195" y="1350" width="245" height="65" fill="#fff7ed" stroke="#d97706" rx="7"/>
+ <text class="taskText" x="1317" y="1375">
+  <tspan x="1317">خدمات دستی</tspan>
+  <tspan x="1317" dy="18">و فعالیت جانبی</tspan>
+ </text>
+ <rect x="1480" y="1350" width="245" height="65" fill="#fef3c7" stroke="#d97706" rx="7"/>
+ <text class="taskText" x="1602" y="1375">
+  <tspan x="1602">ثبت زمان شروع</tspan>
+  <tspan x="1602" dy="18">و پایان توقف</tspan>
+ </text>
+ <rect x="1765" y="1350" width="245" height="65" fill="#fef3c7" stroke="#d97706" rx="7"/>
+ <text class="taskText" x="1887" y="1375">
+  <tspan x="1887">ثبت علت و دستگاه</tspan>
+  <tspan x="1887" dy="18">و تعداد مرتبط</tspan>
+ </text>
+ <rect x="2050" y="1350" width="245" height="65" fill="#dcfce7" stroke="#16a34a" rx="7"/>
+ <text class="taskText" x="2172" y="1375">
+  <tspan x="2172">رفع مانع</tspan>
+  <tspan x="2172" dy="18">و ازسرگیری عملیات</tspan>
+ </text>
+ <path class="flow" d="M300 1382 H340"/>
+ <path class="flow" d="M585 1382 H625"/>
+ <path class="flow" d="M870 1382 H910"/>
+ <path class="flow" d="M1155 1382 H1195"/>
+ <path class="flow" d="M1440 1382 H1480"/>
+ <path class="flow" d="M1725 1382 H1765"/>
+ <path class="flow" d="M2010 1382 H2050"/>
+
+ <text class="subText" x="1230" y="1460">
+  ثبت توقف به معنی ایجاد مسیر دوباره‌کاری یا اسقاط نیست؛ این موارد در داده‌های فعلی به‌عنوان گردش تأییدشده مشخص نشده‌اند.
+ </text>
+ </svg>
+ </div>
+ <div class="legend" style="margin-top:14px">
+  <span><i class="key" style="background:#dbeafe;border-color:#2563eb"></i> مهندسی و برنامه‌ریزی</span>
+  <span><i class="key" style="background:#dcfce7;border-color:#16a34a"></i> مواد و تحویل</span>
+  <span><i class="key" style="background:#ffedd5;border-color:#ea580c"></i> عملیات تولید</span>
+  <span><i class="key" style="background:#f3e8ff;border-color:#9333ea"></i> ارزیابی</span>
+  <span><i class="key" style="background:#e0f2fe;border-color:#0284c7"></i> حسابداری صنعتی</span>
+  <span><i class="line"></i> جریان توالی</span>
+  <span><i class="dash"></i> جریان پیام / اطلاعات</span>
+  <span><i class="warn"></i> رویداد توقف یا استثنا</span>
+ </div>
+</section>
+
+<section class="panel">
+ <h2>چرخه هر عملیات تولیدی</h2>
+ <p>
+ برای هر کدام از هفت عملیات، چرخه اجرایی شامل آماده‌سازی، اولین تعویض ابزار،
+ ستاپ، تولید اولین محصول، کنترل اولین محصول، تولید سری، کنترل هر محصول،
+ ثبت عملکرد و تحویل به عملیات بعدی است.
+ </p>
+ <div class="note">
+ <strong>نکته مدل‌سازی:</strong>
+ کنترل اولین قطعه در برنامه‌ریزی وجود دارد؛ اما معیارهای پذیرش، مسئول مستقل کنترل،
+ و مسیر رسمی برگشت قطعه در اطلاعات موجود تعریف نشده‌اند.
+ به همین دلیل در نمودار، نتیجه کنترل به‌صورت دروازه تصمیم نمایش داده شده و
+ مسیر اصلاح ستاپ برای عدم تأیید، مسیر پیشنهادی است؛ نه یک گردش قطعی مستند.
+ </div>
+</section>
+
+<footer>
+AC1020 | Drawing 202020 | Workflow reconstruction from supplied workbook data
+</footer>
+</main>
+</body>
+</html>

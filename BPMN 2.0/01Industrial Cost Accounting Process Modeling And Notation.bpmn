@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_AC1020" targetNamespace="http://example.com/ac1020/manufacturing" exporter="Camunda Modeler" exporterVersion="5.4.2">
+  <bpmn:collaboration id="Collaboration_AC1020">
+    <bpmn:participant id="Participant_Manufacturing" name="AC1020 - فرایند اصلی تولید" processRef="Process_Manufacturing" />
+    <bpmn:participant id="Participant_Evaluation" name="واحد ارزیابی و تحلیل داده" processRef="Process_Evaluation" />
+    <bpmn:participant id="Participant_CostAccounting" name="واحد حسابداری صنعتی" processRef="Process_CostAccounting" />
+    <bpmn:messageFlow id="Message_EngineeringData" name="اطلاعات مهندسی" sourceRef="Task_EngineeringBasis" targetRef="Task_Evaluation_Engineering" />
+    <bpmn:messageFlow id="Message_PlanningData" name="برنامه تولید" sourceRef="Task_IssuePlan" targetRef="Task_Evaluation_Planning" />
+    <bpmn:messageFlow id="Message_ActualPerformance" name="عملکرد واقعی و توقفات" sourceRef="Task_RecordActual" targetRef="Task_Evaluation_Actual" />
+    <bpmn:messageFlow id="Message_AccountingStandards" name="مبانی مهندسی" sourceRef="Task_EngineeringBasis" targetRef="Task_Accounting_Standards" />
+    <bpmn:messageFlow id="Message_AccountingPlan" name="اطلاعات برنامه تولید" sourceRef="Task_IssuePlan" targetRef="Task_Accounting_Plan" />
+    <bpmn:messageFlow id="Message_AccountingActual" name="اطلاعات مصرف واقعی" sourceRef="Task_RecordActual" targetRef="Task_Accounting_Actual" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Manufacturing" name="AC1020 Manufacturing Process" isExecutable="false">
+    <bpmn:documentation>
+      Product: AC1020
+      Drawing: 202020
+      Material: ST37
+      Production Batch: 5100 Pieces
+      Raw Material: Sheet 4100 x 300 mm
+    </bpmn:documentation>
+    <bpmn:laneSet id="LaneSet_Manufacturing">
+      <bpmn:lane id="Lane_Delivery" name="تحویل محصول">
+        <bpmn:flowNodeRef>Task_Collect</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Pack</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Ship</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Manufacturing</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Production" name="تولید">
+        <bpmn:flowNodeRef>Call_AB10</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Call_WI10</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Call_FM10</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Call_WI20</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Call_FC10</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Call_FM20</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Call_TM10</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RecordActual</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Materials" name="مواد و متریال">
+        <bpmn:flowNodeRef>Start_Manufacturing</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_MaterialInput</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Planning" name="برنامه‌ریزی">
+        <bpmn:flowNodeRef>Task_PlanningReceive</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Scheduling</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_IssuePlan</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Engineering" name="مهندسی">
+        <bpmn:flowNodeRef>Task_EngineeringSpec</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_EngineeringRoute</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_EngineeringBasis</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_Manufacturing" name="شروع فرایند تولید" />
+    <bpmn:task id="Task_MaterialInput" name="دریافت مواد اولیه ST37">
+      <bpmn:documentation>
+        دریافت ورق فولادی ST37
+        ابعاد ورق خام: 4100 x 300 mm
+        کنترل مشخصات و آماده‌سازی مواد برای تولید
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_EngineeringSpec" name="تعیین نقشه و مشخصات AC1020 / 202020">
+      <bpmn:documentation>
+        بررسی نقشه ساخت قطعه AC1020
+        شماره نقشه: 202020
+        تعیین ابعاد، تلرانس‌ها و مشخصات فنی محصول
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_EngineeringRoute" name="تعیین توالی عملیات، ماشین، ابزار و مواد">
+      <bpmn:documentation>
+        تعیین Routing تولید
+        تعیین ترتیب عملیات، ماشین‌آلات و ابزارهای مورد نیاز
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_EngineeringBasis" name="تعیین مبانی مهندسی زمان و مصرف ابزار">
+      <bpmn:documentation>
+        تعیین زمان‌های استاندارد مهندسی
+        تعیین مبانی مصرف ابزار و مواد
+        تهیه اطلاعات پایه برای ارزیابی و حسابداری صنعتی
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_PlanningReceive" name="دریافت مسیر مهندسی و مشخصات بچ 5100">
+      <bpmn:documentation>
+        دریافت اطلاعات مهندسی و برنامه مسیر ساخت
+        مقدار برنامه تولید: 5100 قطعه
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_Scheduling" name="زمان‌بندی مراحل و تخصیص منابع">
+      <bpmn:documentation>
+        زمان‌بندی عملیات تولید
+        تخصیص ماشین‌آلات، ابزار و منابع انسانی
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_IssuePlan" name="ابلاغ برنامه تولید و نسخه اطلاعاتی">
+      <bpmn:documentation>
+        ابلاغ برنامه تولید به واحد اجرا
+        تهیه نسخه اطلاعاتی برنامه برای ارزیابی عملکرد
+        و حسابداری صنعتی
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:callActivity id="Call_AB10" name="AB10 - برش ورق فولاد 140×140 mm" calledElement="Process_OperationCycle">
+      <bpmn:documentation>
+        Operation: AB10
+        Machine: AB10
+        Tool: CK10
+        Raw Size: 140 x 140 mm
+        Engineering Time: 15 min
+        Planned Time: 18.059 min
+        Actual Time: 19.072 min
+        اجرای چرخه استاندارد عملیات تولید
+      </bpmn:documentation>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Call_WI10" name="WI10 - وایرکات اول، قطر خارجی 134 mm" calledElement="Process_OperationCycle">
+      <bpmn:documentation>
+        Operation: WI10
+        Machine: WI10
+        Tool: WK10
+        Operation: تبدیل قطعه مربع به دایره
+        External Diameter: 134 mm
+        Engineering Time: 30 min
+        Planned Time: 34.575 min
+        Actual Time: 41.228 min
+        اجرای چرخه استاندارد عملیات تولید
+      </bpmn:documentation>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Call_FM10" name="FM10 - فرز دستی، سوراخ مرکزی Ø10" calledElement="Process_OperationCycle">
+      <bpmn:documentation>
+        Operation: FM10
+        Machine: FM10
+        Tool: MATE
+        Central Hole: Diameter 10 mm
+        Depth: 3 mm
+        Manual Deburring: 0.5 min
+        Engineering Time: 2 min
+        Planned Time: 3.197 min
+        Actual Time: 3.445 min
+        اجرای چرخه استاندارد عملیات تولید
+      </bpmn:documentation>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Call_WI20" name="WI20 - وایرکات دوم، قطر داخلی 54 mm" calledElement="Process_OperationCycle">
+      <bpmn:documentation>
+        Operation: WI20
+        Machine: WI20
+        Tool: WK10
+        Internal Diameter: 54 mm
+        Engineering Time: 20 min
+        Planned Time: 24.067 min
+        Actual Time: 28.518 min
+        اجرای چرخه استاندارد عملیات تولید
+      </bpmn:documentation>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Call_FC10" name="FC10 - فرز CNC، ایجاد 10 سوراخ" calledElement="Process_OperationCycle">
+      <bpmn:documentation>
+        Operation: FC10
+        Machine: FC10
+        Tool: FCK40
+        Number of Holes: 10 per piece
+        Drawing Data: 3.2 / 3.21 mm
+        Engineering Time: 5 min
+        Planned Time: 7.142 min
+        Actual Time: 8.050 min
+        اجرای چرخه استاندارد عملیات تولید
+      </bpmn:documentation>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Call_FM20" name="FM20 - فرز دستی و قلاویزکاری M4" calledElement="Process_OperationCycle">
+      <bpmn:documentation>
+        Operation: FM20
+        Machine: FM20
+        Tool: M4
+        Six tapping positions
+        Drill Diameter: 3.2 mm
+        Depth: 3 mm
+        Cleaning before and after operation: 5 min
+        Engineering Time: 10 min
+        Planned Time: 21.480 min
+        Actual Time: 30.541 min
+        اجرای چرخه استاندارد عملیات تولید
+      </bpmn:documentation>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Call_TM10" name="TM10 - تراش دستی، پخ و پلیسه‌گیری" calledElement="Process_OperationCycle">
+      <bpmn:documentation>
+        Operation: TM10
+        Machine: TM10
+        Tool: CM60
+        Two turning operations per piece
+        Chamfering and deburring
+        Engineering Time: 2 min
+        Planned Time: 2.352 min
+        Actual Time: 2.453 min
+        اجرای چرخه استاندارد عملیات تولید
+      </bpmn:documentation>
+    </bpmn:callActivity>
+    <bpmn:task id="Task_RecordActual" name="ثبت زمان واقعی، تولید و توقفات">
+      <bpmn:documentation>
+        ثبت اطلاعات عملکرد واقعی هر عملیات شامل:
+        مقدار تولید
+        زمان واقعی عملیات
+        زمان توقف
+        علت توقف
+        نام دستگاه
+        اپراتور
+        زمان شروع و پایان توقف
+        اطلاعات برای ارزیابی و حسابداری صنعتی
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_Collect" name="جمع‌آوری محصولات تکمیل‌شده" />
+    <bpmn:task id="Task_Pack" name="بسته‌بندی محصول" />
+    <bpmn:task id="Task_Ship" name="آماده‌سازی و ارسال محصول نهایی" />
+    <bpmn:endEvent id="End_Manufacturing" name="پایان فرایند تولید" />
+    <bpmn:sequenceFlow id="MF_01" sourceRef="Start_Manufacturing" targetRef="Task_MaterialInput" />
+    <bpmn:sequenceFlow id="MF_02" sourceRef="Task_MaterialInput" targetRef="Task_EngineeringSpec" />
+    <bpmn:sequenceFlow id="MF_03" sourceRef="Task_EngineeringSpec" targetRef="Task_EngineeringRoute" />
+    <bpmn:sequenceFlow id="MF_04" sourceRef="Task_EngineeringRoute" targetRef="Task_EngineeringBasis" />
+    <bpmn:sequenceFlow id="MF_05" sourceRef="Task_EngineeringBasis" targetRef="Task_PlanningReceive" />
+    <bpmn:sequenceFlow id="MF_06" sourceRef="Task_PlanningReceive" targetRef="Task_Scheduling" />
+    <bpmn:sequenceFlow id="MF_07" sourceRef="Task_Scheduling" targetRef="Task_IssuePlan" />
+    <bpmn:sequenceFlow id="MF_08" sourceRef="Task_IssuePlan" targetRef="Call_AB10" />
+    <bpmn:sequenceFlow id="MF_09" sourceRef="Call_AB10" targetRef="Call_WI10" />
+    <bpmn:sequenceFlow id="MF_10" sourceRef="Call_WI10" targetRef="Call_FM10" />
+    <bpmn:sequenceFlow id="MF_11" sourceRef="Call_FM10" targetRef="Call_WI20" />
+    <bpmn:sequenceFlow id="MF_12" sourceRef="Call_WI20" targetRef="Call_FC10" />
+    <bpmn:sequenceFlow id="MF_13" sourceRef="Call_FC10" targetRef="Call_FM20" />
+    <bpmn:sequenceFlow id="MF_14" sourceRef="Call_FM20" targetRef="Call_TM10" />
+    <bpmn:sequenceFlow id="MF_15" sourceRef="Call_TM10" targetRef="Task_RecordActual" />
+    <bpmn:sequenceFlow id="MF_16" sourceRef="Task_RecordActual" targetRef="Task_Collect" />
+    <bpmn:sequenceFlow id="MF_17" sourceRef="Task_Collect" targetRef="Task_Pack" />
+    <bpmn:sequenceFlow id="MF_18" sourceRef="Task_Pack" targetRef="Task_Ship" />
+    <bpmn:sequenceFlow id="MF_19" sourceRef="Task_Ship" targetRef="End_Manufacturing" />
+  </bpmn:process>
+  <bpmn:process id="Process_OperationCycle" name="چرخه استاندارد اجرای هر عملیات تولید" isExecutable="false">
+    <bpmn:documentation>
+      This reusable process is called by the seven manufacturing
+      operations: AB10, WI10, FM10, WI20, FC10, FM20 and TM10.
+
+      The cycle includes preparation, tool setup, first-piece
+      production, first-piece inspection, approval, serial production,
+      recording and handover.
+    </bpmn:documentation>
+    <bpmn:startEvent id="Operation_Start" name="شروع عملیات" />
+    <bpmn:task id="Operation_Prepare" name="آماده‌سازی ماشین و ابزار">
+      <bpmn:documentation>
+        آماده‌سازی ماشین، مواد، تجهیزات و ابزار مورد نیاز
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Operation_Setup" name="تعویض ابزار و انجام ستاپ">
+      <bpmn:documentation>
+        نصب ابزار، تنظیم ماشین و آماده‌سازی شرایط اجرای عملیات
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Operation_FirstPiece" name="تولید اولین قطعه" />
+    <bpmn:task id="Operation_FirstInspection" name="کنترل اولین قطعه" />
+    <bpmn:exclusiveGateway id="Operation_ApprovalGateway" name="تأیید شروع تولید سری؟" default="Operation_NotApproved" />
+    <bpmn:task id="Operation_SerialProduction" name="تولید سری و کنترل هر قطعه">
+      <bpmn:documentation>
+        اجرای تولید برای تعداد برنامه‌ریزی‌شده
+        کنترل هر قطعه در حین تولید
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Operation_Record" name="ثبت مقدار تولید و زمان عملیات" />
+    <bpmn:task id="Operation_Handover" name="تحویل قطعه به مرحله بعد" />
+    <bpmn:task id="Operation_CorrectSetup" name="اصلاح ستاپ و بررسی مجدد">
+      <bpmn:documentation>
+        مسیر پیشنهادی در صورت عدم تأیید اولین قطعه.
+        معیارهای پذیرش و مسئول مستقل کنترل در اطلاعات ورودی
+        به‌صورت رسمی تعریف نشده‌اند.
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:endEvent id="Operation_End" name="پایان عملیات" />
+    <bpmn:sequenceFlow id="OC_01" sourceRef="Operation_Start" targetRef="Operation_Prepare" />
+    <bpmn:sequenceFlow id="OC_02" sourceRef="Operation_Prepare" targetRef="Operation_Setup" />
+    <bpmn:sequenceFlow id="OC_03" sourceRef="Operation_Setup" targetRef="Operation_FirstPiece" />
+    <bpmn:sequenceFlow id="OC_04" sourceRef="Operation_FirstPiece" targetRef="Operation_FirstInspection" />
+    <bpmn:sequenceFlow id="OC_05" sourceRef="Operation_FirstInspection" targetRef="Operation_ApprovalGateway" />
+    <bpmn:sequenceFlow id="Operation_Approved" name="بله" sourceRef="Operation_ApprovalGateway" targetRef="Operation_SerialProduction">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">
+        approved = true
+      </bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Operation_NotApproved" name="خیر" sourceRef="Operation_ApprovalGateway" targetRef="Operation_CorrectSetup" />
+    <bpmn:sequenceFlow id="OC_06" sourceRef="Operation_CorrectSetup" targetRef="Operation_FirstPiece" />
+    <bpmn:sequenceFlow id="OC_07" sourceRef="Operation_SerialProduction" targetRef="Operation_Record" />
+    <bpmn:sequenceFlow id="OC_08" sourceRef="Operation_Record" targetRef="Operation_Handover" />
+    <bpmn:sequenceFlow id="OC_09" sourceRef="Operation_Handover" targetRef="Operation_End" />
+  </bpmn:process>
+  <bpmn:process id="Process_Evaluation" name="Process Evaluation" isExecutable="false">
+    <bpmn:startEvent id="Evaluation_Start" name="دریافت اطلاعات تولید" />
+    <bpmn:task id="Task_Evaluation_Engineering" name="دریافت مبانی مهندسی">
+      <bpmn:documentation>
+        دریافت نقشه، زمان استاندارد و اطلاعات پایه مهندسی
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_Evaluation_Planning" name="دریافت برنامه تولید">
+      <bpmn:documentation>
+        دریافت زمان‌های برنامه‌ریزی‌شده و مقدار تولید
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_Evaluation_Actual" name="دریافت عملکرد واقعی و توقفات">
+      <bpmn:documentation>
+        دریافت زمان واقعی، مقدار تولید و اطلاعات توقفات
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_Evaluation_Compare" name="مقایسه برنامه با عملکرد واقعی" />
+    <bpmn:task id="Task_Evaluation_Variance" name="تحلیل انحرافات زمانی و عملکردی" />
+    <bpmn:task id="Task_Evaluation_Downtime" name="تحلیل توقفات و علل آن" />
+    <bpmn:task id="Task_Evaluation_Report" name="تهیه گزارش مدیریتی" />
+    <bpmn:endEvent id="Evaluation_End" name="پایان ارزیابی" />
+    <bpmn:sequenceFlow id="EV_01" sourceRef="Evaluation_Start" targetRef="Task_Evaluation_Engineering" />
+    <bpmn:sequenceFlow id="EV_02" sourceRef="Task_Evaluation_Engineering" targetRef="Task_Evaluation_Planning" />
+    <bpmn:sequenceFlow id="EV_03" sourceRef="Task_Evaluation_Planning" targetRef="Task_Evaluation_Actual" />
+    <bpmn:sequenceFlow id="EV_04" sourceRef="Task_Evaluation_Actual" targetRef="Task_Evaluation_Compare" />
+    <bpmn:sequenceFlow id="EV_05" sourceRef="Task_Evaluation_Compare" targetRef="Task_Evaluation_Variance" />
+    <bpmn:sequenceFlow id="EV_06" sourceRef="Task_Evaluation_Variance" targetRef="Task_Evaluation_Downtime" />
+    <bpmn:sequenceFlow id="EV_07" sourceRef="Task_Evaluation_Downtime" targetRef="Task_Evaluation_Report" />
+    <bpmn:sequenceFlow id="EV_08" sourceRef="Task_Evaluation_Report" targetRef="Evaluation_End" />
+  </bpmn:process>
+  <bpmn:process id="Process_CostAccounting" name="Industrial Cost Accounting" isExecutable="false">
+    <bpmn:startEvent id="Accounting_Start" name="دریافت اطلاعات هزینه" />
+    <bpmn:task id="Task_Accounting_Standards" name="دریافت مبانی مهندسی و استانداردها" />
+    <bpmn:task id="Task_Accounting_Plan" name="دریافت اطلاعات برنامه تولید" />
+    <bpmn:task id="Task_Accounting_Actual" name="دریافت مصرف و عملکرد واقعی" />
+    <bpmn:task id="Task_Accounting_OperationCost" name="محاسبه هزینه عملیات">
+      <bpmn:documentation>
+        محاسبه هزینه ماشین‌آلات، نیروی کار، ابزار و سایر
+        هزینه‌های مرتبط با هر مرحله تولید
+      </bpmn:documentation>
+    </bpmn:task>
+    <bpmn:task id="Task_Accounting_WIP" name="تجمیع هزینه و انتقال کالای در جریان ساخت WIP" />
+    <bpmn:task id="Task_Accounting_FinalCost" name="محاسبه بهای تمام‌شده محصول نهایی" />
+    <bpmn:task id="Task_Accounting_Reconcile" name="تطبیق هزینه‌ها و تهیه گزارش حسابداری" />
+    <bpmn:endEvent id="Accounting_End" name="پایان محاسبات حسابداری صنعتی" />
+    <bpmn:sequenceFlow id="CA_01" sourceRef="Accounting_Start" targetRef="Task_Accounting_Standards" />
+    <bpmn:sequenceFlow id="CA_02" sourceRef="Task_Accounting_Standards" targetRef="Task_Accounting_Plan" />
+    <bpmn:sequenceFlow id="CA_03" sourceRef="Task_Accounting_Plan" targetRef="Task_Accounting_Actual" />
+    <bpmn:sequenceFlow id="CA_04" sourceRef="Task_Accounting_Actual" targetRef="Task_Accounting_OperationCost" />
+    <bpmn:sequenceFlow id="CA_05" sourceRef="Task_Accounting_OperationCost" targetRef="Task_Accounting_WIP" />
+    <bpmn:sequenceFlow id="CA_06" sourceRef="Task_Accounting_WIP" targetRef="Task_Accounting_FinalCost" />
+    <bpmn:sequenceFlow id="CA_07" sourceRef="Task_Accounting_FinalCost" targetRef="Task_Accounting_Reconcile" />
+    <bpmn:sequenceFlow id="CA_08" sourceRef="Task_Accounting_Reconcile" targetRef="Accounting_End" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_AC1020">
+    <bpmndi:BPMNPlane id="BPMNPlane_AC1020" bpmnElement="Collaboration_AC1020">
+      <bpmndi:BPMNShape id="Shape_Participant_Manufacturing" bpmnElement="Participant_Manufacturing" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="3500" height="610" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Delivery" bpmnElement="Lane_Delivery" isHorizontal="true">
+        <dc:Bounds x="190" y="580" width="3470" height="110" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Production" bpmnElement="Lane_Production" isHorizontal="true">
+        <dc:Bounds x="190" y="390" width="3470" height="190" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Materials" bpmnElement="Lane_Materials" isHorizontal="true">
+        <dc:Bounds x="190" y="290" width="3470" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Planning" bpmnElement="Lane_Planning" isHorizontal="true">
+        <dc:Bounds x="190" y="185" width="3470" height="105" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_Engineering" bpmnElement="Lane_Engineering" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="3470" height="105" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start_Manufacturing" bpmnElement="Start_Manufacturing">
+        <dc:Bounds x="260" y="325" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="245" y="361" width="66" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_MaterialInput" bpmnElement="Task_MaterialInput">
+        <dc:Bounds x="330" y="312" width="145" height="62" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_EngineeringSpec" bpmnElement="Task_EngineeringSpec">
+        <dc:Bounds x="520" y="100" width="160" height="62" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_EngineeringRoute" bpmnElement="Task_EngineeringRoute">
+        <dc:Bounds x="720" y="100" width="160" height="62" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_EngineeringBasis" bpmnElement="Task_EngineeringBasis">
+        <dc:Bounds x="920" y="100" width="160" height="62" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_PlanningReceive" bpmnElement="Task_PlanningReceive">
+        <dc:Bounds x="1120" y="205" width="160" height="62" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Scheduling" bpmnElement="Task_Scheduling">
+        <dc:Bounds x="1320" y="205" width="160" height="62" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_IssuePlan" bpmnElement="Task_IssuePlan">
+        <dc:Bounds x="1520" y="205" width="160" height="62" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Call_AB10" bpmnElement="Call_AB10">
+        <dc:Bounds x="1710" y="425" width="135" height="75" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Call_WI10" bpmnElement="Call_WI10">
+        <dc:Bounds x="1880" y="425" width="135" height="75" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Call_FM10" bpmnElement="Call_FM10">
+        <dc:Bounds x="2050" y="425" width="135" height="75" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Call_WI20" bpmnElement="Call_WI20">
+        <dc:Bounds x="2220" y="425" width="135" height="75" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Call_FC10" bpmnElement="Call_FC10">
+        <dc:Bounds x="2390" y="425" width="135" height="75" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Call_FM20" bpmnElement="Call_FM20">
+        <dc:Bounds x="2560" y="425" width="135" height="75" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Call_TM10" bpmnElement="Call_TM10">
+        <dc:Bounds x="2730" y="425" width="135" height="75" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_RecordActual" bpmnElement="Task_RecordActual">
+        <dc:Bounds x="2910" y="425" width="160" height="75" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Collect" bpmnElement="Task_Collect">
+        <dc:Bounds x="3110" y="600" width="125" height="62" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Pack" bpmnElement="Task_Pack">
+        <dc:Bounds x="3270" y="600" width="125" height="62" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Ship" bpmnElement="Task_Ship">
+        <dc:Bounds x="3430" y="600" width="125" height="62" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_Manufacturing" bpmnElement="End_Manufacturing">
+        <dc:Bounds x="3590" y="613" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3579" y="649" width="59" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_MF_01" bpmnElement="MF_01">
+        <di:waypoint x="296" y="343" />
+        <di:waypoint x="330" y="343" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_02" bpmnElement="MF_02">
+        <di:waypoint x="475" y="343" />
+        <di:waypoint x="500" y="343" />
+        <di:waypoint x="500" y="131" />
+        <di:waypoint x="520" y="131" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_03" bpmnElement="MF_03">
+        <di:waypoint x="680" y="131" />
+        <di:waypoint x="720" y="131" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_04" bpmnElement="MF_04">
+        <di:waypoint x="880" y="131" />
+        <di:waypoint x="920" y="131" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_05" bpmnElement="MF_05">
+        <di:waypoint x="1080" y="131" />
+        <di:waypoint x="1100" y="131" />
+        <di:waypoint x="1100" y="236" />
+        <di:waypoint x="1120" y="236" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_06" bpmnElement="MF_06">
+        <di:waypoint x="1280" y="236" />
+        <di:waypoint x="1320" y="236" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_07" bpmnElement="MF_07">
+        <di:waypoint x="1480" y="236" />
+        <di:waypoint x="1520" y="236" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_08" bpmnElement="MF_08">
+        <di:waypoint x="1680" y="236" />
+        <di:waypoint x="1695" y="236" />
+        <di:waypoint x="1695" y="462" />
+        <di:waypoint x="1710" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_09" bpmnElement="MF_09">
+        <di:waypoint x="1845" y="462" />
+        <di:waypoint x="1880" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_10" bpmnElement="MF_10">
+        <di:waypoint x="2015" y="462" />
+        <di:waypoint x="2050" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_11" bpmnElement="MF_11">
+        <di:waypoint x="2185" y="462" />
+        <di:waypoint x="2220" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_12" bpmnElement="MF_12">
+        <di:waypoint x="2355" y="462" />
+        <di:waypoint x="2390" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_13" bpmnElement="MF_13">
+        <di:waypoint x="2525" y="462" />
+        <di:waypoint x="2560" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_14" bpmnElement="MF_14">
+        <di:waypoint x="2695" y="462" />
+        <di:waypoint x="2730" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_15" bpmnElement="MF_15">
+        <di:waypoint x="2865" y="462" />
+        <di:waypoint x="2910" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_16" bpmnElement="MF_16">
+        <di:waypoint x="3070" y="462" />
+        <di:waypoint x="3090" y="462" />
+        <di:waypoint x="3090" y="631" />
+        <di:waypoint x="3110" y="631" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_17" bpmnElement="MF_17">
+        <di:waypoint x="3235" y="631" />
+        <di:waypoint x="3270" y="631" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_18" bpmnElement="MF_18">
+        <di:waypoint x="3395" y="631" />
+        <di:waypoint x="3430" y="631" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_19" bpmnElement="MF_19">
+        <di:waypoint x="3555" y="631" />
+        <di:waypoint x="3590" y="631" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Shape_Participant_Evaluation" bpmnElement="Participant_Evaluation" isHorizontal="true">
+        <dc:Bounds x="160" y="820" width="3500" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Evaluation_Start" bpmnElement="Evaluation_Start">
+        <dc:Bounds x="210" y="910" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="188" y="946" width="81" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Evaluation_Engineering" bpmnElement="Task_Evaluation_Engineering">
+        <dc:Bounds x="290" y="895" width="180" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Evaluation_Planning" bpmnElement="Task_Evaluation_Planning">
+        <dc:Bounds x="510" y="895" width="180" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Evaluation_Actual" bpmnElement="Task_Evaluation_Actual">
+        <dc:Bounds x="730" y="895" width="180" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Evaluation_Compare" bpmnElement="Task_Evaluation_Compare">
+        <dc:Bounds x="950" y="895" width="180" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Evaluation_Variance" bpmnElement="Task_Evaluation_Variance">
+        <dc:Bounds x="1170" y="895" width="180" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Evaluation_Downtime" bpmnElement="Task_Evaluation_Downtime">
+        <dc:Bounds x="1390" y="895" width="180" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Evaluation_Report" bpmnElement="Task_Evaluation_Report">
+        <dc:Bounds x="1610" y="895" width="110" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Evaluation_End" bpmnElement="Evaluation_End">
+        <dc:Bounds x="1730" y="910" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1725" y="946" width="46" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_EV_01" bpmnElement="EV_01">
+        <di:waypoint x="246" y="928" />
+        <di:waypoint x="290" y="928" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_EV_02" bpmnElement="EV_02">
+        <di:waypoint x="470" y="928" />
+        <di:waypoint x="510" y="928" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_EV_03" bpmnElement="EV_03">
+        <di:waypoint x="690" y="928" />
+        <di:waypoint x="730" y="928" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_EV_04" bpmnElement="EV_04">
+        <di:waypoint x="910" y="928" />
+        <di:waypoint x="950" y="928" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_EV_05" bpmnElement="EV_05">
+        <di:waypoint x="1130" y="928" />
+        <di:waypoint x="1170" y="928" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_EV_06" bpmnElement="EV_06">
+        <di:waypoint x="1350" y="928" />
+        <di:waypoint x="1390" y="928" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_EV_07" bpmnElement="EV_07">
+        <di:waypoint x="1570" y="928" />
+        <di:waypoint x="1610" y="928" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_EV_08" bpmnElement="EV_08">
+        <di:waypoint x="1720" y="928" />
+        <di:waypoint x="1730" y="928" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Shape_Participant_CostAccounting" bpmnElement="Participant_CostAccounting" isHorizontal="true">
+        <dc:Bounds x="160" y="1110" width="3500" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Accounting_Start" bpmnElement="Accounting_Start">
+        <dc:Bounds x="210" y="1200" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="187" y="1236" width="83" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Accounting_Standards" bpmnElement="Task_Accounting_Standards">
+        <dc:Bounds x="290" y="1185" width="190" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Accounting_Plan" bpmnElement="Task_Accounting_Plan">
+        <dc:Bounds x="520" y="1185" width="190" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Accounting_Actual" bpmnElement="Task_Accounting_Actual">
+        <dc:Bounds x="750" y="1185" width="190" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Accounting_OperationCost" bpmnElement="Task_Accounting_OperationCost">
+        <dc:Bounds x="980" y="1185" width="190" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Accounting_WIP" bpmnElement="Task_Accounting_WIP">
+        <dc:Bounds x="1210" y="1185" width="190" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Accounting_FinalCost" bpmnElement="Task_Accounting_FinalCost">
+        <dc:Bounds x="1440" y="1185" width="190" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_Accounting_Reconcile" bpmnElement="Task_Accounting_Reconcile">
+        <dc:Bounds x="1670" y="1185" width="190" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Accounting_End" bpmnElement="Accounting_End">
+        <dc:Bounds x="1890" y="1200" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1876" y="1236" width="64" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_CA_01" bpmnElement="CA_01">
+        <di:waypoint x="246" y="1218" />
+        <di:waypoint x="290" y="1218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_CA_02" bpmnElement="CA_02">
+        <di:waypoint x="480" y="1218" />
+        <di:waypoint x="520" y="1218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_CA_03" bpmnElement="CA_03">
+        <di:waypoint x="710" y="1218" />
+        <di:waypoint x="750" y="1218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_CA_04" bpmnElement="CA_04">
+        <di:waypoint x="940" y="1218" />
+        <di:waypoint x="980" y="1218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_CA_05" bpmnElement="CA_05">
+        <di:waypoint x="1170" y="1218" />
+        <di:waypoint x="1210" y="1218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_CA_06" bpmnElement="CA_06">
+        <di:waypoint x="1400" y="1218" />
+        <di:waypoint x="1440" y="1218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_CA_07" bpmnElement="CA_07">
+        <di:waypoint x="1630" y="1218" />
+        <di:waypoint x="1670" y="1218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_CA_08" bpmnElement="CA_08">
+        <di:waypoint x="1860" y="1218" />
+        <di:waypoint x="1890" y="1218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Message_EngineeringData" bpmnElement="Message_EngineeringData">
+        <di:waypoint x="1000" y="162" />
+        <di:waypoint x="1000" y="760" />
+        <di:waypoint x="380" y="760" />
+        <di:waypoint x="380" y="895" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="659" y="735" width="62" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Message_PlanningData" bpmnElement="Message_PlanningData">
+        <di:waypoint x="1600" y="267" />
+        <di:waypoint x="1600" y="780" />
+        <di:waypoint x="600" y="780" />
+        <di:waypoint x="600" y="895" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1079" y="755" width="42" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Message_ActualPerformance" bpmnElement="Message_ActualPerformance">
+        <di:waypoint x="2990" y="500" />
+        <di:waypoint x="2990" y="790" />
+        <di:waypoint x="820" y="790" />
+        <di:waypoint x="820" y="895" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1862" y="765" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Message_AccountingStandards" bpmnElement="Message_AccountingStandards">
+        <di:waypoint x="1030" y="162" />
+        <di:waypoint x="1030" y="1070" />
+        <di:waypoint x="385" y="1070" />
+        <di:waypoint x="385" y="1185" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="683" y="1045" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Message_AccountingPlan" bpmnElement="Message_AccountingPlan">
+        <di:waypoint x="1640" y="267" />
+        <di:waypoint x="1640" y="1090" />
+        <di:waypoint x="615" y="1090" />
+        <di:waypoint x="615" y="1185" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1089" y="1065" width="77" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Message_AccountingActual" bpmnElement="Message_AccountingActual">
+        <di:waypoint x="3030" y="500" />
+        <di:waypoint x="3030" y="1100" />
+        <di:waypoint x="845" y="1100" />
+        <di:waypoint x="845" y="1185" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1895" y="1075" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
